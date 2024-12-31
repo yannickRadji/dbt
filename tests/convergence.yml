@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: convergence_patients
+    description: "Converged patient data from Regions 1 and 2"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - patient_id
+    columns:
+      - name: patient_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('convergence_analyses')
+              field: patient_id
+
+  - name: convergence_analyses
+    description: "Converged analyses data from Regions 1 and 2"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - analysis_id
+    columns:
+      - name: analysis_id
+        tests:
+          - not_null
+      - name: patient_id
+        tests:
+          - relationships:
+              to: ref('convergence_patients')
+              field: patient_id
+
+  - name: convergence_deliverances
+    description: "Converged deliverances data from Regions 1 and 2"
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - delivrance_id
+    columns:
+      - name: patient_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('convergence_patients')
+              field: patient_id
