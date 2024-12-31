@@ -29,4 +29,4 @@ deduplicated_patients AS (
     ORDER BY first_name, last_name, birth_date, start_date ASC -- Oldest start date first
 )
 SELECT *
-FROM deduplicated_patients;
+FROM deduplicated_patients

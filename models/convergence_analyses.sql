@@ -32,4 +32,4 @@ SELECT *
 FROM region1_analyses
 UNION ALL
 SELECT *
-FROM region2_analyses;
+FROM region2_analyses
