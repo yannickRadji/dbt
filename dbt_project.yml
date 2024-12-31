@@ -12,4 +12,4 @@ clean-targets:
 
 models:
   regional_data_convergence:
-    materialized: table
+    materialized: view

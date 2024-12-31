@@ -2,21 +2,21 @@ version: 2
 
 models:
   - name: convergence_patients
-    description: "Converged patient data from Regions 1 and 2"
+    description: "Converged patient data from Regions 1 and 2, deduplicated based on first name, last name, and birth date. The oldest start date is retained for duplicate patients."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
-            - patient_id
+            - first_name
+            - last_name
+            - birth_date
     columns:
       - name: patient_id
         tests:
           - not_null
-          - relationships:
-              to: ref('convergence_analyses')
-              field: patient_id
+          - unique
 
   - name: convergence_analyses
-    description: "Converged analyses data from Regions 1 and 2"
+    description: "Converged analyses data from Regions 1 and 2, with unique analysis IDs and standardized blood group format."
     tests:
       - dbt_utils.unique_combination_of_columns:
           combination_of_columns:
@@ -25,22 +25,41 @@ models:
       - name: analysis_id
         tests:
           - not_null
-      - name: patient_id
-        tests:
-          - relationships:
-              to: ref('convergence_patients')
-              field: patient_id
-
-  - name: convergence_deliverances
-    description: "Converged deliverances data from Regions 1 and 2"
-    tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - delivrance_id
-    columns:
+          - unique
       - name: patient_id
         tests:
           - not_null
           - relationships:
               to: ref('convergence_patients')
               field: patient_id
+      - name: blood_group
+        tests:
+          - accepted_values:
+              values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+
+  - name: convergence_deliverances
+    description: "Converged deliverances data from Regions 1 and 2, with unique deliverance IDs, standardized blood group format, and volume converted to milliliters."
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - delivrance_id
+    columns:
+      - name: delivrance_id
+        tests:
+          - not_null
+          - unique
+      - name: patient_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('convergence_patients')
+              field: patient_id
+      - name: blood_type
+        tests:
+          - accepted_values:
+              values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+      - name: volume_ml
+        tests:
+          - not_null
+          - expression_is_true:
+              expression: "volume_ml > 0"
