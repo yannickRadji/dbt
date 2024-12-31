@@ -17,7 +17,7 @@ region1_deliverances AS (
         delivrance_date,
         blood_type,
         volume_ml
-    FROM region1_raw.deliverances
+    FROM region1_raw.delivrances
 ),
 region2_deliverances AS (
     SELECT
@@ -25,11 +25,11 @@ region2_deliverances AS (
         patient_id,
         delivrance_date,
         blood_type,
-        volume_ml
-    FROM region2_raw.deliverances
+        volume_l
+    FROM region2_raw.delivrances
 )
 SELECT *
 FROM region1_deliverances
 UNION ALL
 SELECT *
-FROM region2_deliverances;
+FROM region2_deliverances
