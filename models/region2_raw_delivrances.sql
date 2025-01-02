@@ -1,6 +1,6 @@
 SELECT
-    delivrance_id,
-    patient_id,
+    delivrance_id + 1000000 AS delivrance_id,
+    patient_id + 1000000 AS patient_id,
     delivrance_date,
     CASE
         WHEN blood_type = 'Oplus' THEN 'O+'

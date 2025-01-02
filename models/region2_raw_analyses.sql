@@ -1,6 +1,6 @@
 SELECT
-    analysis_id,
-    patient_id,
+    analysis_id + 1000000 AS analysis_id,
+    patient_id + 1000000 AS patient_id,
     analysis_date,
     status,
     CASE

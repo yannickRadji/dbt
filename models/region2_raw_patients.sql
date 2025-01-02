@@ -1,5 +1,5 @@
 SELECT
-    patient_id,
+    patient_id + 1000000 AS patient_id,
     first_name,
     last_name,
     birth_date,

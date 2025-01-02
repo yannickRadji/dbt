@@ -14,11 +14,11 @@ WITH region1_analyses AS (
 
 region2_analyses AS (
     SELECT
+        analysis_id,
         dp.patient_id,
         analysis_date,
         blood_group,
-        status,
-        analysis_id + 1000000 AS analysis_id
+        status
     FROM {{ ref('region2_raw_analyses') }} AS a
     INNER JOIN {{ ref('convergence_patients') }} AS dp
         ON a.patient_id = dp.patient_id
