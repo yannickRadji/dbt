@@ -14,11 +14,11 @@ WITH region1_deliverances AS (
 
 region2_deliverances AS (
     SELECT
+        delivrance_id,
         dp.patient_id,
         delivrance_date,
         blood_type,
-        volume_ml,
-        delivrance_id + 1000000 AS delivrance_id
+        volume_ml
     FROM {{ ref('region2_raw_delivrances') }} AS d
     INNER JOIN {{ ref('convergence_patients') }} AS dp
         ON d.patient_id = dp.patient_id

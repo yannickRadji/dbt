@@ -11,7 +11,7 @@ WITH combined_patients AS (
     FROM {{ ref('region1_raw_patients') }}
     UNION ALL
     SELECT
-        patient_id + 1000000 AS patient_id,
+        patient_id,
         first_name,
         last_name,
         birth_date,
