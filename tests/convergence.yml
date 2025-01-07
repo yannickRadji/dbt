@@ -61,7 +61,7 @@ models:
               to: ref('convergence_patients')
               field: patient_id
       - name: blood_type
-      description: "Standardized blood type involved in the deliverance."
+        description: "Standardized blood type involved in the deliverance."
         tests:
           - accepted_values:
               values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
