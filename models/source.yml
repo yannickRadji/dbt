@@ -42,3 +42,5 @@ sources:
         description: "Unified blood analysis results across regions."
       - name: delivrances
         description: "Unified blood deliverance records across regions."
+      - name: mapping_blood_types
+        description: "table de pour que les métiers puisse mettre leur valeurs de transcodage"
