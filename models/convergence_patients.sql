@@ -31,6 +31,6 @@ deduplicated_patients AS (
     FROM combined_patients
     ORDER BY first_name ASC, last_name ASC, birth_date ASC, start_date ASC -- keep Oldest start date first, first_name, last_name, birth_date to align with the DISTINCT ON clause
 )
-
+--Sarah & Lucas sont dans les 2 régions et doivent apparaitre qu'une fois
 SELECT *
 FROM deduplicated_patients
