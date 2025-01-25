@@ -10,10 +10,64 @@ sources:
     tables:
       - name: patients
         description: "Patient details for Region 1."
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - first_name
+                - last_name
+                - birth_date
+        columns:
+          - name: patient_id
+            description: "Unique identifier for each patient."
+            tests:
+              - not_null
+              - unique
       - name: analyses
         description: "Blood analysis results for Region 1."
+        columns:
+          - name: analysis_id
+            description: "Unique identifier for each analysis."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the analysis to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region1_raw', 'patients')
+                  field: patient_id
+          - name: blood_group
+            description: "Region already to standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
       - name: delivrances
         description: "Blood deliverances data for Region 1."
+        columns:
+          - name: delivrance_id
+            description: "Unique identifier for each deliverance."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the deliverance to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region1_raw', 'patients')
+                  field: patient_id
+          - name: blood_type
+            description: "Region already to standardized blood type involved in the deliverance."
+            tests:
+              - accepted_values:
+                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+          - name: volume_ml
+            description: "Volume in milliliters delivered during the procedure."
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "> 1"
 
   - name: region2_raw
     description: >
@@ -24,10 +78,65 @@ sources:
     tables:
       - name: patients
         description: "Patient details for Region 2."
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - first_name
+                - last_name
+                - birth_date
+        columns:
+          - name: patient_id
+            description: "Unique identifier for each patient."
+            tests:
+             - not_null
+             - unique
       - name: analyses
         description: "Blood analysis results for Region 2."
+        columns:
+          - name: analysis_id
+            description: "Unique identifier for each analysis."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the analysis to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region2_raw', 'patients')
+                  field: patient_id
+          - name: blood_group
+            description: "Region with not standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: ["Oplus","Aminus","Oplus","Aplus","ABplus","Oplus","Aplus","Bplus","Bminus","ABplus"]
       - name: delivrances
         description: "Blood deliverances data for Region 2."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "volume_l > 0 and volume_l < 1"
+        columns:
+          - name: delivrance_id
+            description: "Unique identifier for each deliverance."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the deliverance to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region2_raw', 'patients')
+                  field: patient_id
+          - name: blood_type
+            description: "Region with not standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: ["Oplus","Aminus","Oplus","Aplus","ABplus","Oplus","Aplus","Bplus","Bminus","ABplus"]
+          - name: volume_l
+            description: "Volume in liter not standardized delivered during the procedure."
+            tests:
+              - not_null
 
   - name: national_convergence
     description: >
@@ -36,11 +145,10 @@ sources:
     database: national_db
     schema: convergence
     tables:
-      - name: patients
-        description: "Unified patient data across regions."
-      - name: analyses
-        description: "Unified blood analysis results across regions."
-      - name: delivrances
-        description: "Unified blood deliverance records across regions."
       - name: mapping_blood_types
-        description: "table de pour que les métiers puisse mettre leur valeurs de transcodage"
+        description: "Table for business transcode values."
+        columns:
+          - name: standardized_value
+            tests:
+              - accepted_values:
+                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
