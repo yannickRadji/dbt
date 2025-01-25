@@ -11,6 +11,7 @@ models:
             - birth_date
     columns:
       - name: patient_id
+        description: "Unique identifier for each patient."
         tests:
           - not_null
           - unique
@@ -23,16 +24,19 @@ models:
             - analysis_id
     columns:
       - name: analysis_id
+        description: "Unique identifier for each analysis."
         tests:
           - not_null
           - unique
       - name: patient_id
+        description: "Identifier linking the analysis to a specific patient."
         tests:
           - not_null
           - relationships:
               to: ref('convergence_patients')
               field: patient_id
       - name: blood_group
+        description: "Standardized blood group of the patient."
         tests:
           - accepted_values:
               values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
@@ -45,20 +49,24 @@ models:
             - delivrance_id
     columns:
       - name: delivrance_id
+        description: "Unique identifier for each deliverance."
         tests:
           - not_null
           - unique
       - name: patient_id
+        description: "Identifier linking the deliverance to a specific patient."
         tests:
           - not_null
           - relationships:
               to: ref('convergence_patients')
               field: patient_id
       - name: blood_type
+        description: "Standardized blood type involved in the deliverance."
         tests:
           - accepted_values:
               values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
       - name: volume_ml
+        description: "Volume in milliliters delivered during the procedure."
         tests:
           - not_null
           - expression_is_true:
