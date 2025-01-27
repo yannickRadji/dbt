@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 WITH combined_patients AS (
     SELECT
         patient_id,

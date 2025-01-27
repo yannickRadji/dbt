@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 WITH region1_deliverances AS (
     SELECT
         delivrance_id,

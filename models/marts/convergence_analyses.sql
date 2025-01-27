@@ -1,5 +1,3 @@
-{{ config(materialized='table') }}
-
 WITH region1_analyses AS (
     SELECT
         analysis_id,
