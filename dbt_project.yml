@@ -12,7 +12,7 @@ clean-targets:
 
 models:
   regional_data_convergence:
-    intermediate:
+    staging:
       materialized: view
     marts:
       materialized: table

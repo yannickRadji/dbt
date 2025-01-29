@@ -1,0 +1,70 @@
+version: 2
+
+sources:
+  - name: region1_raw
+    description: >
+      Raw data schema for Region 1 materialized in the national database.
+      Data is extracted from the public schema of the region1_db and stored here for consistency and to allow future updates.
+    database: national_db
+    schema: region1_raw
+    tables:
+      - name: patients
+        description: "Patient details for Region 1."
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - first_name
+                - last_name
+                - birth_date
+        columns:
+          - name: patient_id
+            description: "Unique identifier for each patient."
+            tests:
+              - not_null
+              - unique
+      - name: analyses
+        description: "Blood analysis results for Region 1."
+        columns:
+          - name: analysis_id
+            description: "Unique identifier for each analysis."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the analysis to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region1_raw', 'patients')
+                  field: patient_id
+          - name: blood_group
+            description: "Region already to standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+      - name: delivrances
+        description: "Blood deliverances data for Region 1."
+        columns:
+          - name: delivrance_id
+            description: "Unique identifier for each deliverance."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the deliverance to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region1_raw', 'patients')
+                  field: patient_id
+          - name: blood_type
+            description: "Region already to standardized blood type involved in the deliverance."
+            tests:
+              - accepted_values:
+                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
+          - name: volume_ml
+            description: "Volume in milliliters delivered during the procedure."
+            tests:
+              - not_null
+              - dbt_utils.expression_is_true:
+                  expression: "> 1"
