@@ -11,7 +11,7 @@ models:
             - birth_date
     columns:
       - name: patient_id
-        description: "Unique identifier for each patient."
+        description: "National unique identifier for each patient."
         tests:
           - not_null
           - unique
@@ -24,12 +24,12 @@ models:
           region2_raw: region2_raw_analyses
     columns:
       - name: analysis_id
-        description: "Unique identifier for each analysis."
+        description: "National unique identifier for each analysis."
         tests:
           - not_null
           - unique
       - name: patient_id
-        description: "Identifier linking the analysis to a specific patient."
+        description: "National identifier linking the analysis to a specific patient."
         tests:
           - not_null
           - relationships:
@@ -49,12 +49,12 @@ models:
           region2_raw: region2_raw_deliverances
     columns:
       - name: delivrance_id
-        description: "Unique identifier for each deliverance."
+        description: "National unique identifier for each deliverance."
         tests:
           - not_null
           - unique
       - name: patient_id
-        description: "Identifier linking the deliverance to a specific patient."
+        description: "National identifier linking the deliverance to a specific patient."
         tests:
           - not_null
           - relationships:
