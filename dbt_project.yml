@@ -1,6 +1,7 @@
 name: 'regional_data_convergence'
 version: '1.0.0'
 config-version: 2
+profile: "cbr"
 
 model-paths: ['models']
 seed-paths: ['seeds']

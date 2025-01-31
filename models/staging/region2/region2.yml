@@ -26,12 +26,12 @@ sources:
         description: "Blood analysis results for Region 2."
         columns:
           - name: analysis_id
-            description: "Unique identifier for each analysis."
+            description: "{{ doc('analysis')}}"
             tests:
               - not_null
               - unique
           - name: patient_id
-            description: "Identifier linking the analysis to a specific patient."
+            description: "{{ doc('analysis_patient')}}"
             tests:
               - not_null
               - relationships:
