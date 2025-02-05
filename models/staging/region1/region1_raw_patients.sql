@@ -1,3 +1,8 @@
+with source as (
+    SELECT * FROM {{ source('region1_raw', 'patients') }}
+)
+
+
 SELECT
     patient_id,
     first_name,
@@ -5,4 +10,4 @@ SELECT
     birth_date,
     region,
     start_date
-FROM {{ source('region1_raw', 'patients') }}
+FROM source

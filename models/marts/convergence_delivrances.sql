@@ -1,45 +1,65 @@
-WITH region1_deliverances AS (
+with delivrances_region1 as (
+    SELECT * FROM {{ ref('region1_raw_delivrances') }}
+),
+delivrances_region2 as (
+    SELECT * FROM {{ ref('region2_raw_delivrances') }}
+),
+patients_region1 as (
+    SELECT * FROM {{ ref('region1_raw_patients') }}
+),
+patients_region2 as (
+    SELECT * FROM {{ ref('region2_raw_patients') }}
+),
+convergence_patients as (
+    SELECT * FROM {{ ref('convergence_patients') }}
+),
+
+region1_deliverances AS (
     SELECT
-        delivrance_id,
-        d.patient_id,
-        dp.first_name,
-        dp.last_name,
-        dp.birth_date,
-        delivrance_date,
-        blood_type,
-        volume_ml
-    FROM {{ ref('region1_raw_delivrances') }} AS d
-    INNER JOIN {{ ref('region1_raw_patients') }} AS dp
-        ON d.patient_id = dp.patient_id
+        delivrances_region1.delivrance_id,
+        delivrances_region1.patient_id,
+        patients_region1.first_name,
+        patients_region1.last_name,
+        patients_region1.birth_date,
+        delivrances_region1.delivrance_date,
+        delivrances_region1.blood_type,
+        delivrances_region1.volume_ml
+    FROM delivrances_region1
+    INNER JOIN patients_region1
+        ON delivrances_region1.patient_id = patients_region1.patient_id
 ),
 
 region2_deliverances AS (
     SELECT
-        delivrance_id,
-        d.patient_id,
-        dp.first_name,
-        dp.last_name,
-        dp.birth_date,
-        delivrance_date,
-        blood_type,
-        volume_ml
-    FROM {{ ref('region2_raw_delivrances') }} AS d
-    INNER JOIN {{ ref('region2_raw_patients') }} AS dp
-        ON d.patient_id = dp.patient_id
+        delivrances_region2.delivrance_id,
+        delivrances_region2.patient_id,
+        patients_region2.first_name,
+        patients_region2.last_name,
+        patients_region2.birth_date,
+        delivrances_region2.delivrance_date,
+        delivrances_region2.blood_type,
+        delivrances_region2.volume_ml
+    FROM delivrances_region2
+    INNER JOIN patients_region2
+        ON delivrances_region2.patient_id = patients_region2.patient_id
 ),
 
-unioned_delivrances AS (SELECT *
-FROM region1_deliverances
-UNION ALL
-SELECT *
-FROM region2_deliverances)
+unioned_delivrances AS (
+    SELECT *
+    FROM region1_deliverances
+    UNION ALL
+    SELECT *
+    FROM region2_deliverances
+)
 
 SELECT
-    delivrance_id,
-    c.patient_id,
-    delivrance_date,
-    blood_type,
-    volume_ml
-FROM unioned_delivrances AS u
-INNER JOIN {{ ref("convergence_patients")}} AS c
-    ON u.first_name = c.first_name AND u.last_name = c.last_name AND u.birth_date = c.birth_date
+    unioned_delivrances.delivrance_id,
+    convergence_patients.patient_id,
+    unioned_delivrances.delivrance_date,
+    unioned_delivrances.blood_type,
+    unioned_delivrances.volume_ml
+FROM unioned_delivrances
+INNER JOIN convergence_patients
+    ON unioned_delivrances.first_name = convergence_patients.first_name
+    AND unioned_delivrances.last_name = convergence_patients.last_name
+    AND unioned_delivrances.birth_date = convergence_patients.birth_date

@@ -1,4 +1,11 @@
-WITH combined_patients AS (
+with patients_region1 as (
+    SELECT * FROM {{ ref('region1_raw_patients') }}
+),
+patients_region2 as (
+    SELECT * FROM {{ ref('region2_raw_patients') }}
+),
+
+combined_patients AS (
     SELECT
         patient_id,
         first_name,
@@ -6,7 +13,7 @@ WITH combined_patients AS (
         birth_date,
         region,
         start_date
-    FROM {{ ref('region1_raw_patients') }}
+    FROM patients_region1
     UNION ALL
     SELECT
         patient_id,
@@ -15,7 +22,7 @@ WITH combined_patients AS (
         birth_date,
         region,
         start_date
-    FROM {{ ref('region2_raw_patients') }}
+    FROM patients_region2
 ),
 
 deduplicated_patients AS (
