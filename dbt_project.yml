@@ -2,6 +2,7 @@ name: 'regional_data_convergence'
 version: '1.0.0'
 config-version: 2
 profile: "cbr"
+require-dbt-version: [">=1.7.0", "<1.8.0"]
 
 model-paths: ['models']
 seed-paths: ['seeds']
