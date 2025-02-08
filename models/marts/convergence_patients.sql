@@ -21,7 +21,7 @@ patients_region2 as (
     {% endif %}
 ),
 -- incremental sur l'ID uniquement pas possible car sinon il ne voit pas les changes sur les attributs (sauf id & region qui ne peuvent pas changer) (même si je dodge le problème des id similaires inter région grace au staging)
--- au final moins intéressant en terme de perf que sans
+-- au final moins intéressant en terme de perf que sans mais en vrai l'idéal est de le faire à partir d'un stream plutot que sur un feature se basant sur une query
 combined_patients AS (
     SELECT
         patient_id,
