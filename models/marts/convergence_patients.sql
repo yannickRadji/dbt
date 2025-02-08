@@ -1,10 +1,27 @@
+{{
+    config(
+        materialized='incremental',
+        unique_key=["first_name", "last_name", "birth_date"],
+        on_schema_change='append_new_columns'
+    )
+}}
+
 with patients_region1 as (
     SELECT * FROM {{ ref('region1_raw_patients') }}
+    {% if is_incremental() %}
+        WHERE (first_name, last_name, birth_date, start_date) NOT IN (
+        SELECT first_name, last_name, birth_date, start_date FROM {{ this }})
+    {% endif %}
 ),
 patients_region2 as (
     SELECT * FROM {{ ref('region2_raw_patients') }}
+    {% if is_incremental() %}
+        WHERE (first_name, last_name, birth_date, start_date) NOT IN (
+        SELECT first_name, last_name, birth_date, start_date FROM {{ this }})
+    {% endif %}
 ),
-
+-- incremental sur l'ID uniquement pas possible car sinon il ne voit pas les changes sur les attributs (sauf id & region qui ne peuvent pas changer) (même si je dodge le problème des id similaires inter région grace au staging)
+-- au final moins intéressant en terme de perf que sans
 combined_patients AS (
     SELECT
         patient_id,
@@ -34,7 +51,7 @@ deduplicated_patients AS (
         region,
         start_date
     FROM combined_patients
-    ORDER BY first_name ASC, last_name ASC, birth_date ASC, start_date ASC -- keep Oldest start date first, first_name, last_name, birth_date to align with the DISTINCT ON clause
+    ORDER BY first_name, last_name, birth_date, start_date ASC -- keep Oldest start date first, first_name, last_name, birth_date to align with the DISTINCT ON clause
 )
 --Sarah & Lucas sont dans les 2 régions et doivent apparaitre qu'une fois
 SELECT *

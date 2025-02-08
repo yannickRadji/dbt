@@ -5,6 +5,7 @@ profile: "cbr"
 require-dbt-version: [">=1.7.0", "<1.8.0"]
 
 model-paths: ['models']
+snapshot-paths: ["snapshots"]
 seed-paths: ['seeds']
 test-paths:
   - "tests"
