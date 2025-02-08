@@ -41,7 +41,7 @@ sources:
             description: "Region with not standardized blood group of the patient."
             tests:
               - accepted_values:
-                  values: ["Oplus","Aminus","Oplus","Aplus","ABplus","Oplus","Aplus","Bplus","Bminus","ABplus"]
+                  values: [ "Oplus", "Ominus", "Aplus", "Aminus", "Bplus", "Bminus", "ABplus", "ABminus"]
       - name: delivrances
         description: "Blood deliverances data for Region 2."
         tests:
@@ -64,7 +64,7 @@ sources:
             description: "Region with not standardized blood group of the patient."
             tests:
               - accepted_values:
-                  values: ["Oplus","Aminus","Oplus","Aplus","ABplus","Oplus","Aplus","Bplus","Bminus","ABplus"]
+                  values: [ "Oplus", "Ominus", "Aplus", "Aminus", "Bplus", "Bminus", "ABplus", "ABminus"]
           - name: volume_l
             description: "Volume in liter not standardized delivered during the procedure."
             tests:
