@@ -43,15 +43,18 @@ combined_patients AS (
 ),
 
 deduplicated_patients AS (
-    SELECT DISTINCT ON (first_name, last_name, birth_date)
-        patient_id,
-        first_name,
-        last_name,
-        birth_date,
-        region,
-        start_date
-    FROM combined_patients
-    ORDER BY first_name, last_name, birth_date, start_date ASC -- keep Oldest start date first, first_name, last_name, birth_date to align with the DISTINCT ON clause
+    SELECT * FROM (
+        SELECT
+            patient_id,
+            first_name,
+            last_name,
+            birth_date,
+            region,
+            start_date,
+            ROW_NUMBER() OVER (PARTITION BY first_name, last_name, birth_date ORDER BY start_date ASC) AS rn
+        FROM combined_patients
+    )
+    WHERE rn = 1
 )
 --Sarah & Lucas sont dans les 2 régions et doivent apparaitre qu'une fois
 SELECT *
