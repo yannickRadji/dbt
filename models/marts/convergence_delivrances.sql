@@ -1,8 +1,14 @@
 with delivrances_region1 as (
     SELECT * FROM {{ ref('region1_raw_delivrances') }}
+    {% if is_incremental() %}
+    WHERE delivrance_date > (SELECT MAX(delivrance_date) FROM {{ this }})
+    {% endif %}
 ),
 delivrances_region2 as (
     SELECT * FROM {{ ref('region2_raw_delivrances') }}
+    {% if is_incremental() %}
+    WHERE delivrance_date > (SELECT MAX(delivrance_date) FROM {{ this }})
+    {% endif %}
 ),
 patients_region1 as (
     SELECT * FROM {{ ref('region1_raw_patients') }}

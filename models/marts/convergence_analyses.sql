@@ -1,8 +1,14 @@
 with analysis_region1 as (
     SELECT * FROM {{ ref('region1_raw_analyses') }}
+    {% if is_incremental() %}
+    WHERE analysis_date > (SELECT MAX(analysis_date) FROM {{ this }})
+    {% endif %}
 ),
 analysis_region2 as (
     SELECT * FROM {{ ref('region2_raw_analyses') }}
+    {% if is_incremental() %}
+    WHERE analysis_date > (SELECT MAX(analysis_date) FROM {{ this }})
+    {% endif %}
 ),
 patients_region1 as (
     SELECT * FROM {{ ref('region1_raw_patients') }}
