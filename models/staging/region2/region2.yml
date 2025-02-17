@@ -69,18 +69,3 @@ sources:
             description: "Volume in liter not standardized delivered during the procedure."
             tests:
               - not_null
-
-  - name: national_convergence
-    description: >
-      The target schema where transformed and converged data from Region 1 and Region 2
-      is stored after the DBT pipeline.
-    database: national_db
-    schema: convergence
-    tables:
-      - name: mapping_blood_types
-        description: "Table for business transcode values."
-        columns:
-          - name: standardized_value
-            tests:
-              - accepted_values:
-                  values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
