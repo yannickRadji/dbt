@@ -5,7 +5,10 @@ sources:
     description: >
       Raw data schema for Region 1 materialized in the national database.
       Data is extracted from the public schema of the region1_db and stored here for consistency and to allow future updates.
-    database: national_db
+    database: |
+      {%- if target.name == "dev" -%} national_db
+      {%- elif target.name == "prod" -%} blood_prod_db
+      {%- endif -%}
     schema: region1_raw
     tables:
       - name: patients
