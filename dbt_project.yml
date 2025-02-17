@@ -16,9 +16,9 @@ clean-targets:
 models:
   regional_data_convergence:
     pre-hook:
-      - "INSERT INTO audit.logs (event, timestamp) VALUES ('STARTED: {{ this.name }}', now())"
+      - "INSERT INTO audit.logs (event, timestamp) VALUES ('# Delta model: {{ this.name }}', now())"
     post-hook:
-      - "INSERT INTO audit.logs (event, timestamp, new_rows) VALUES ('COMPLETED: {{ this.name }}', now(), (SELECT COUNT(*) FROM {{ this }}))"
+      - "INSERT INTO audit.logs (event, timestamp, new_rows) VALUES ('# Full model: {{ this.name }}', now(), (SELECT COUNT(*) FROM {{ this }}))"
     staging:
       materialized: view
     marts:
