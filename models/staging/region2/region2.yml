@@ -1,0 +1,74 @@
+version: 2
+
+sources:
+  - name: region2_raw
+    description: >
+      Raw data schema for Region 2 materialized in the national database.
+      Data is extracted from the public schema of the region2_db and stored here for consistency and to allow future updates.
+    database: |
+      {%- if target.name == "dev" -%} national_db
+      {%- elif target.name == "prod" -%} blood_prod_db
+      {%- endif -%}
+    schema: region2_raw
+    tables:
+      - name: patients
+        description: "Patient details for Region 2."
+        tests:
+          - dbt_utils.unique_combination_of_columns:
+              combination_of_columns:
+                - first_name
+                - last_name
+                - birth_date
+        columns:
+          - name: patient_id
+            description: "{{ doc('patient')}}"
+            tests:
+             - not_null
+             - unique
+      - name: analyses
+        description: "Blood analysis results for Region 2."
+        columns:
+          - name: analysis_id
+            description: "{{ doc('analysis')}}"
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "{{ doc('analysis_patient')}}"
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region2_raw', 'patients')
+                  field: patient_id
+          - name: blood_group
+            description: "Region with not standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: [ "Oplus", "Ominus", "Aplus", "Aminus", "Bplus", "Bminus", "ABplus", "ABminus"]
+      - name: delivrances
+        description: "Blood deliverances data for Region 2."
+        tests:
+          - dbt_utils.expression_is_true:
+              expression: "volume_l > 0 and volume_l < 1"
+        columns:
+          - name: delivrance_id
+            description: "Unique identifier for each deliverance."
+            tests:
+              - not_null
+              - unique
+          - name: patient_id
+            description: "Identifier linking the deliverance to a specific patient."
+            tests:
+              - not_null
+              - relationships:
+                  to: source('region2_raw', 'patients')
+                  field: patient_id
+          - name: blood_type
+            description: "Region with not standardized blood group of the patient."
+            tests:
+              - accepted_values:
+                  values: [ "Oplus", "Ominus", "Aplus", "Aminus", "Bplus", "Bminus", "ABplus", "ABminus"]
+          - name: volume_l
+            description: "Volume in liter not standardized delivered during the procedure."
+            tests:
+              - not_null

@@ -1,8 +1,11 @@
 name: 'regional_data_convergence'
 version: '1.0.0'
 config-version: 2
+profile: "cbr"
+require-dbt-version: [">=1.7.0", "<1.8.0"]
 
 model-paths: ['models']
+snapshot-paths: ["snapshots"]
 seed-paths: ['seeds']
 test-paths:
   - "tests"
@@ -12,4 +15,11 @@ clean-targets:
 
 models:
   regional_data_convergence:
-    materialized: view
+    pre-hook:
+      - "INSERT INTO audit.logs (event, timestamp) VALUES ('# Delta model: {{ this.name }}', now())"
+    post-hook:
+      - "INSERT INTO audit.logs (event, timestamp, new_rows) VALUES ('# Full model: {{ this.name }}', now(), (SELECT COUNT(*) FROM {{ this }}))"
+    staging:
+      materialized: view
+    marts:
+      materialized: table

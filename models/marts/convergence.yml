@@ -11,7 +11,7 @@ models:
             - birth_date
     columns:
       - name: patient_id
-        description: "Unique identifier for each patient."
+        description: "National unique identifier for each patient."
         tests:
           - not_null
           - unique
@@ -19,17 +19,17 @@ models:
   - name: convergence_analyses
     description: "Converged analyses data from Regions 1 and 2, with unique analysis IDs and standardized blood group format."
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - analysis_id
+      - count_match:
+          region1_raw: region1_raw_analyses
+          region2_raw: region2_raw_analyses
     columns:
       - name: analysis_id
-        description: "Unique identifier for each analysis."
+        description: "National unique identifier for each analysis."
         tests:
           - not_null
           - unique
       - name: patient_id
-        description: "Identifier linking the analysis to a specific patient."
+        description: "National identifier linking the analysis to a specific patient."
         tests:
           - not_null
           - relationships:
@@ -44,17 +44,17 @@ models:
   - name: convergence_deliverances
     description: "Converged deliverances data from Regions 1 and 2, with unique deliverance IDs, standardized blood group format, and volume converted to milliliters."
     tests:
-      - dbt_utils.unique_combination_of_columns:
-          combination_of_columns:
-            - delivrance_id
+      - count_match:
+          region1_raw: region1_raw_deliverances
+          region2_raw: region2_raw_deliverances
     columns:
       - name: delivrance_id
-        description: "Unique identifier for each deliverance."
+        description: "National unique identifier for each deliverance."
         tests:
           - not_null
           - unique
       - name: patient_id
-        description: "Identifier linking the deliverance to a specific patient."
+        description: "National identifier linking the deliverance to a specific patient."
         tests:
           - not_null
           - relationships:
@@ -70,4 +70,4 @@ models:
         tests:
           - not_null
           - expression_is_true:
-              expression: "volume_ml > 0"
+              expression: "volume_ml > 1"
