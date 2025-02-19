@@ -10,7 +10,9 @@ SELECT
     patient_id + 1000000 AS patient_id,
     analysis_date,
     status,
-    mapping_blood_types.standardized_value AS blood_group
+    mapping_blood_types.standardized_value AS blood_group,
+    'region 2' as _source,
+    CURRENT_TIMESTAMP as _created_date
 FROM analyses
 LEFT JOIN mapping_blood_types
     ON analyses.blood_group = mapping_blood_types.source_value

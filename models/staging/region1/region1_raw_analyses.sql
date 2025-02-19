@@ -7,5 +7,7 @@ SELECT
     patient_id,
     analysis_date,
     blood_group,
-    status
+    status,
+    'region 1' as _source,
+    CURRENT_TIMESTAMP as _created_date
 FROM source

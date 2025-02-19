@@ -6,7 +6,7 @@
       unique_key='patient_id',
 
       strategy='check',
-      check_cols=['first_name','last_name','birth_date','region'],
+      check_cols=['first_name','last_name','birth_date'],
     )
 }}
 
@@ -22,7 +22,7 @@ select * from {{ ref('region1_raw_patients') }}
       unique_key='patient_id',
 
       strategy='check',
-      check_cols=['first_name','last_name','birth_date','region'],
+      check_cols=['first_name','last_name','birth_date'],
     )
 }}
 
@@ -38,7 +38,7 @@ select * from {{ ref('region2_raw_patients') }}
       unique_key='patient_id',
 
       strategy='check',
-      check_cols=['first_name','last_name','birth_date','region', 'start_date'],
+      check_cols=['first_name','last_name','birth_date','start_date'],
     )
 }}
 

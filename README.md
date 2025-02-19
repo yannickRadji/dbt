@@ -1,15 +1,5 @@
-Welcome to your new dbt project!
+This **dbt** project demonstrates:
+- How to set up and run dbt locally using **PostgreSQL** but only works also with **Snowflake** in the cloud.
+- How to handle multiple regional databases of people recieving blood (here labeled as `region1`, `region2`, etc.) and merge them into a single consolidated data set for patients, deliveries & blood analyses.
 
-### Using the starter project
-
-Try running the following commands:
-- dbt run
-- dbt test
-
-
-### Resources:
-- Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
-- Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
-- Join the [dbt community](https://getdbt.com/community) to learn from other analytics engineers
-- Find [dbt events](https://events.getdbt.com) near you
-- Check out [the blog](https://blog.getdbt.com/) for the latest news on dbt's development and best practices
+To set up initial data and then extra data use sql files in the analyses.

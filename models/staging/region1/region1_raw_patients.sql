@@ -8,6 +8,7 @@ SELECT
     first_name,
     last_name,
     birth_date,
-    region,
-    start_date
+    start_date,
+    'region 1' as _source,
+    CURRENT_TIMESTAMP as _created_date
 FROM source

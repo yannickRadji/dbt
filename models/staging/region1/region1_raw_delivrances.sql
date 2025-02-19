@@ -7,5 +7,7 @@ SELECT
     patient_id,
     delivrance_date,
     blood_type,
-    volume_ml
+    volume_ml,
+    'region 1' as _source,
+    CURRENT_TIMESTAMP as _created_date
 FROM source
