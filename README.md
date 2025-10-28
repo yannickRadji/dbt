@@ -9,14 +9,12 @@ All data models come with two technical columns prepend by "_"
 There is doc that I recommend to read to do so:
 
 ## (Optional) Create a virtual environment
-python -m venv .venv
+C:\ProgramData\miniconda3\python.exe -m venv .venv
 source .venv/bin/activate  # macOS/Linux
 .\.venv\Scripts\activate   # Windows
 
 ## Install dbt packages:
-pip install dbt-core dbt-postgres
-Or, 
-pip install dbt-core dbt-snowflake
+pip install -r requirements.txt
 
 ## Configuration
 dbt requires a profiles.yml file (usually in ~/.dbt/profiles.yml) to define connection details.
