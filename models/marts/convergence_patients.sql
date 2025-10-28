@@ -69,5 +69,6 @@ SELECT
     birth_date,
     start_date,
     _source,
-    _created_date
+    _created_date,
+    CURRENT_TIMESTAMP as _modified_date
 FROM deduplicated_patients

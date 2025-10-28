@@ -82,7 +82,8 @@ SELECT
     unioned_analyses.blood_group,
     unioned_analyses.status,
     unioned_analyses._source,
-    unioned_analyses._created_date
+    unioned_analyses._created_date,
+    CURRENT_TIMESTAMP as _modified_date
 FROM unioned_analyses
 INNER JOIN convergence_patients
     ON unioned_analyses.first_name = convergence_patients.first_name

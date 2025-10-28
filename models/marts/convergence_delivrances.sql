@@ -81,7 +81,8 @@ SELECT
     unioned_delivrances.blood_type,
     unioned_delivrances.volume_ml,
     unioned_delivrances._source,
-    unioned_delivrances._created_date
+    unioned_delivrances._created_date,
+    CURRENT_TIMESTAMP as _modified_date
 FROM unioned_delivrances
 INNER JOIN convergence_patients
     ON unioned_delivrances.first_name = convergence_patients.first_name
