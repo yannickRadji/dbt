@@ -21,5 +21,6 @@ models:
       - "INSERT INTO audit.logs (event, timestamp, new_rows) SELECT '# Full model: {{ this.name }}', CURRENT_TIMESTAMP(), COUNT(*) FROM {{ this }};"
     staging:
       materialized: view
+      secure: true
     marts:
       materialized: table
