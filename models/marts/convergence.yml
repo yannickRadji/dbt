@@ -41,12 +41,12 @@ models:
           - accepted_values:
               values: ["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]
 
-  - name: convergence_deliverances
+  - name: convergence_delivrances
     description: "Converged deliverances data from Regions 1 and 2, with unique deliverance IDs, standardized blood group format, and volume converted to milliliters."
     tests:
       - count_match:
-          region1_raw: region1_raw_deliverances
-          region2_raw: region2_raw_deliverances
+          region1_raw: region1_raw_delivrances
+          region2_raw: region2_raw_delivrances
     columns:
       - name: delivrance_id
         description: "National unique identifier for each deliverance."
@@ -70,4 +70,4 @@ models:
         tests:
           - not_null
           - expression_is_true:
-              expression: "volume_ml > 1"
+              expression: "> 1"
